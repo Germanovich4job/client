@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import React from "react";
+import React from "react"
 import {
   Card,
   CardMedia,
@@ -9,33 +9,31 @@ import {
   CardActionArea,
   CardActions,
   Button,
-} from "@mui/material";
-import { styled } from "@mui/system";
-import { useGetProductByIdQuery } from "@/services/productsApi";
+} from "@mui/material"
+
+import { useGetProductByIdQuery } from "../services/productsApi"
 
 interface ProductCardProps {
   product: {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    imageUrl: string;
-    category?: string;
-    manufacturer?: string;
-  };
+    id: string
+    title: string
+    description: string
+    price: number
+    imageUrl: string
+    category?: string
+    manufacturer?: string
+  }
 }
 
 const ProductCard = ({ id }) => {
-  const { data: product, isLoading } = useGetProductByIdQuery(id);
+  const { data: product, isLoading } = useGetProductByIdQuery(id)
 
-  if (!product) return;
+  if (!product) return
   return (
     <Card>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          height="280"
-          image={product?.imageUrl}
+        <img
+          src={`http://localhost:3000/${product?.imageUrl}`}
           alt={`Фото ${product.title}`}
         />
         <CardContent>
@@ -66,7 +64,7 @@ const ProductCard = ({ id }) => {
         </Button>
       </CardActions>
     </Card>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

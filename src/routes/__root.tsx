@@ -1,8 +1,10 @@
 import * as React from "react"
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router"
+import { createRootRoute } from "@tanstack/react-router"
+import { AppLayout } from "../layouts/AppLayout"
 
+const isProduction = process.env.NODE_ENV === "production"
 export const Route = createRootRoute({
   component: RootComponent,
 })
@@ -10,11 +12,13 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <React.Fragment>
-      <div>Hello "__root"!</div>
-      <Link to="/">Главная</Link>
-      <Link to="/products">Товары</Link>
-      <Outlet />
-      <TanStackRouterDevtools />
+      <AppLayout />
+      {!isProduction && (
+        <TanStackRouterDevtools
+          position="bottom-left"
+          toggleButtonProps={{ style: { bottom: "10%" } }}
+        />
+      )}
     </React.Fragment>
   )
 }

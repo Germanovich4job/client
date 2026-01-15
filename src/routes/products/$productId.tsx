@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
+import ProductCard from "../../components/ProductCard"
 
 type ProductParam = {
   page: number
@@ -15,15 +16,5 @@ export const Route = createFileRoute("/products/$productId")({
 
 function ProductItem() {
   const { productId } = Route.useParams()
-  const { page } = Route.useSearch()
-  return (
-    <div>
-      Hello "/products/$productId"!
-      {
-        <h1>
-          {productId} + {page}{" "}
-        </h1>
-      }
-    </div>
-  )
+  return <ProductCard id={productId} />
 }

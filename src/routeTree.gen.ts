@@ -12,13 +12,13 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products/$productId'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 
 const AboutLazyRouteImport = createFileRoute('/about')()
-const ProductsIndexLazyRouteImport = createFileRoute('/products/')()
 
 const AboutLazyRoute = AboutLazyRouteImport.update({
   id: '/about',
@@ -30,13 +30,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsIndexLazyRoute = ProductsIndexLazyRouteImport.update({
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() =>
-  import('./routes/products/index.lazy').then((d) => d.Route),
-)
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -63,7 +61,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutLazyRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin': typeof AdminIndexRoute
-  '/products': typeof ProductsIndexLazyRoute
+  '/products': typeof ProductsIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
 }
@@ -72,7 +70,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutLazyRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin': typeof AdminIndexRoute
-  '/products': typeof ProductsIndexLazyRoute
+  '/products': typeof ProductsIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
 }
@@ -82,7 +80,7 @@ export interface FileRoutesById {
   '/about': typeof AboutLazyRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin/': typeof AdminIndexRoute
-  '/products/': typeof ProductsIndexLazyRoute
+  '/products/': typeof ProductsIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
 }
@@ -121,7 +119,7 @@ export interface RootRouteChildren {
   AboutLazyRoute: typeof AboutLazyRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
-  ProductsIndexLazyRoute: typeof ProductsIndexLazyRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
   AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
 }
@@ -146,7 +144,7 @@ declare module '@tanstack/react-router' {
       id: '/products/'
       path: '/products'
       fullPath: '/products'
-      preLoaderRoute: typeof ProductsIndexLazyRouteImport
+      preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -185,7 +183,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutLazyRoute: AboutLazyRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
   AdminIndexRoute: AdminIndexRoute,
-  ProductsIndexLazyRoute: ProductsIndexLazyRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   AuthRegisterIndexRoute: AuthRegisterIndexRoute,
 }

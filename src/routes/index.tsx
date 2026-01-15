@@ -5,10 +5,5 @@ export const Route = createFileRoute("/")({
 })
 
 function Index() {
-  return (
-    <div>
-      <div>Index</div>
-      <Link to="/about">About</Link>
-    </div>
-  )
+  return <div className="bg-black flex flex-row"></div>
 }
