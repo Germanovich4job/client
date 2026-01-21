@@ -6,13 +6,15 @@ import "../App.css"
 export const AppLayout = () => {
   return (
     <>
-      <div className="flex flex-col w-full justify-start bg-amber-50">
-        <Header />
-        <main className="flex flex-row min-h-screen w-full transition-all">
-          <div className="sticky">
+      <div className="h-screen overflow-hidden bg-gray-100 flex flex-col">
+        <header className="h-14 text-white flex items-center justify-center">
+          <Header />
+        </header>
+        <main className="flex h-full w-full">
+          <div className="w-72 bg-gray-200">
             <MuiSidebar />
           </div>
-          <div className="h-auto text-slate-800">
+          <div className="overflow-auto h-full w-full">
             <Outlet />
           </div>
         </main>

@@ -15,6 +15,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products/$productId'
+import { Route as ProductsEditIndexRouteImport } from './routes/products/edit/index'
+import { Route as ProductsAddIndexRouteImport } from './routes/products/add/index'
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 
@@ -45,6 +47,16 @@ const ProductsProductIdRoute = ProductsProductIdRouteImport.update({
   path: '/products/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsEditIndexRoute = ProductsEditIndexRouteImport.update({
+  id: '/products/edit/',
+  path: '/products/edit/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsAddIndexRoute = ProductsAddIndexRouteImport.update({
+  id: '/products/add/',
+  path: '/products/add/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRegisterIndexRoute = AuthRegisterIndexRouteImport.update({
   id: '/auth/register/',
   path: '/auth/register/',
@@ -64,6 +76,8 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
+  '/products/add': typeof ProductsAddIndexRoute
+  '/products/edit': typeof ProductsEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -73,6 +87,8 @@ export interface FileRoutesByTo {
   '/products': typeof ProductsIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
   '/auth/register': typeof AuthRegisterIndexRoute
+  '/products/add': typeof ProductsAddIndexRoute
+  '/products/edit': typeof ProductsEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -83,6 +99,8 @@ export interface FileRoutesById {
   '/products/': typeof ProductsIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
   '/auth/register/': typeof AuthRegisterIndexRoute
+  '/products/add/': typeof ProductsAddIndexRoute
+  '/products/edit/': typeof ProductsEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -94,6 +112,8 @@ export interface FileRouteTypes {
     | '/products'
     | '/auth/login'
     | '/auth/register'
+    | '/products/add'
+    | '/products/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -103,6 +123,8 @@ export interface FileRouteTypes {
     | '/products'
     | '/auth/login'
     | '/auth/register'
+    | '/products/add'
+    | '/products/edit'
   id:
     | '__root__'
     | '/'
@@ -112,6 +134,8 @@ export interface FileRouteTypes {
     | '/products/'
     | '/auth/login/'
     | '/auth/register/'
+    | '/products/add/'
+    | '/products/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -122,6 +146,8 @@ export interface RootRouteChildren {
   ProductsIndexRoute: typeof ProductsIndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
   AuthRegisterIndexRoute: typeof AuthRegisterIndexRoute
+  ProductsAddIndexRoute: typeof ProductsAddIndexRoute
+  ProductsEditIndexRoute: typeof ProductsEditIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -161,6 +187,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/edit/': {
+      id: '/products/edit/'
+      path: '/products/edit'
+      fullPath: '/products/edit'
+      preLoaderRoute: typeof ProductsEditIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products/add/': {
+      id: '/products/add/'
+      path: '/products/add'
+      fullPath: '/products/add'
+      preLoaderRoute: typeof ProductsAddIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/register/': {
       id: '/auth/register/'
       path: '/auth/register'
@@ -186,6 +226,8 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsIndexRoute: ProductsIndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   AuthRegisterIndexRoute: AuthRegisterIndexRoute,
+  ProductsAddIndexRoute: ProductsAddIndexRoute,
+  ProductsEditIndexRoute: ProductsEditIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
