@@ -30,6 +30,7 @@ const schema = z.object({
   quantity: z.number(),
   category: z.string().optional(),
   manufacturer: z.string().optional(),
+  imageUrl: z.string().url().optional(), // Добавляем поле для хранения base64 изображения
 })
 
 type ProductFormProps = {
@@ -41,16 +42,13 @@ type ProductFormProps = {
 
 const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
   const dispatch = useDispatch()
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null) // Убираем state для выбранного файла
 
   // Используем useForm вместе с Zod для контроля формы
   const methods = useForm({
     resolver: zodResolver(schema),
     defaultValues: product || {},
   })
-
-  console.log(product, "product")
 
   const {
     control,
@@ -61,25 +59,31 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
     setValue,
   } = methods
 
-  const currentValues = watch() // Наблюдение за всеми полями одновременно
-
-  console.log(currentValues) // Здесь видим текущие значения полей
+  const {
+    title,
+    description,
+    price,
+    quantity,
+    category,
+    manufacturer,
+    imageUrl,
+  } = watch()
 
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation()
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation()
 
+  /**
+   * Обработчик отправки формы
+   */
   const submitHandler = async data => {
-    const formData = new FormData()
-
-    formData.append("title", data.title)
-    formData.append("description", data.description)
-    formData.append("price", data.price) // Преобразование числа в строку
-    formData.append("quantity", data.quantity) // Аналогично
-    formData.append("category", data.category || "")
-    formData.append("manufacturer", data.manufacturer || "")
-
-    if (selectedFile) {
-      formData.append("image", selectedFile)
+    const formData = {
+      title,
+      description,
+      price,
+      quantity,
+      category,
+      manufacturer,
+      imageUrl, // Отправляем строку с изображением в формате base64
     }
 
     if (mode === "add") {
@@ -100,6 +104,33 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
     }
   }
 
+  /**
+   * Функция для чтения загруженного файла и перевода его в base64
+   */
+  const readImageAsBase64 = file => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = event => resolve(event.target.result.toString())
+      reader.onerror = error => reject(error)
+      reader.readAsDataURL(file)
+    })
+  }
+
+  /**
+   * Обработчик изменения файла
+   */
+  const handleFileSelect = async event => {
+    const file = event.target.files[0] // Получаем выбранный файл
+    if (!file) return
+
+    try {
+      const result = await readImageAsBase64(file) // Читаем файл в base64
+      setValue("imageUrl", result) // Устанавливаем новое значение поля imageUrl
+    } catch (err) {
+      console.error("Ошибка при чтении изображения:", err)
+    }
+  }
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
@@ -107,13 +138,14 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
       </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(submitHandler)}>
+          {/* Остальные поля */}
           <TextField
             label="Название"
             helperText={errors.title?.message}
             error={!!errors.title}
             fullWidth
             margin="dense"
-            value={currentValues.title || ""}
+            value={title}
             onChange={event => setValue("title", event.target.value)}
           />
           <TextField
@@ -122,7 +154,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
             error={!!errors.description}
             fullWidth
             margin="dense"
-            value={currentValues.description || ""}
+            value={description}
             onChange={event => setValue("description", event.target.value)}
           />
           <TextField
@@ -132,7 +164,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
             fullWidth
             margin="dense"
             type="number"
-            value={Number(currentValues.price)}
+            value={price}
             onChange={event => setValue("price", Number(event.target.value))}
           />
           <TextField
@@ -142,7 +174,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
             fullWidth
             margin="dense"
             type="number"
-            value={Number(currentValues.quantity)}
+            value={quantity}
             onChange={event => setValue("quantity", Number(event.target.value))}
           />
           <TextField
@@ -151,7 +183,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
             error={!!errors.category}
             fullWidth
             margin="dense"
-            value={currentValues.category || ""}
+            value={category}
             onChange={event => setValue("category", event.target.value)}
           />
           <TextField
@@ -160,7 +192,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
             error={!!errors.manufacturer}
             fullWidth
             margin="dense"
-            value={currentValues.manufacturer || ""}
+            value={manufacturer}
             onChange={event => setValue("manufacturer", event.target.value)}
           />
           <Box mt={2}>
@@ -175,9 +207,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
             <input
               type="file"
               accept="image/*"
-              onChange={e =>
-                setSelectedFile(e.target.files && e.target.files[0])
-              }
+              onChange={handleFileSelect} // Используем новый обработчик файлов
               ref={fileInputRef}
               hidden
             />
