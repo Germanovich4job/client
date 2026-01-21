@@ -1,11 +1,23 @@
 "use client"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-const BASE_URL = "http://localhost:3000/api/"
+const BASE_URL = "http://localhost:3000"
+
+const username = "admin"
+const password = "admin"
+const authToken = btoa(`${username}:${password}`)
+
+const baseQueryConfig = fetchBaseQuery({
+  baseUrl: BASE_URL,
+  prepareHeaders: headers => {
+    headers.set("Authorization", `Basic ${authToken}`)
+    return headers
+  },
+})
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: baseQueryConfig,
   tagTypes: ["Product"],
   endpoints: builder => ({
     getAllProducts: builder.query({
