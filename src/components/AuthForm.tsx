@@ -9,7 +9,7 @@ import {
   Dialog,
   DialogTitle,
 } from "@mui/material"
-import { useRouter } from "@tanstack/react-router"
+import { Link, useRouter } from "@tanstack/react-router"
 import { useLoginMutation, useRegisterMutation } from "../services/authApi"
 import { useState } from "react"
 
@@ -48,12 +48,12 @@ const AuthForm = ({ mode }) => {
       if (mode === "register") {
         await register(data).unwrap()
         alert("Вы успешно зарегистрированы")
-        navigate("/")
+        navigate({ to: "/" })
       } else {
         const result = await login(data).unwrap()
         localStorage.setItem("token", result.accessToken)
         alert("Вы вошли в систему")
-        router.navigate("/dashboard")
+        navigate({ to: "/" })
       }
     } catch (err) {
       setShowErrorMessage(true)
@@ -97,7 +97,7 @@ const AuthForm = ({ mode }) => {
       </DialogContent>
       <DialogActions>
         <Button color="primary" type="submit">
-          Отмена
+          <Link to="/"> Отмена</Link>
         </Button>
         <Button
           variant="contained"
