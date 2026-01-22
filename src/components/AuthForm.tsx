@@ -1,96 +1,114 @@
-"use client";
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
 import {
   TextField,
   Button,
-  Paper,
-  Grid,
   DialogContent,
   DialogActions,
   Dialog,
   DialogTitle,
-} from "@mui/material";
-import { useRouter } from "next/router";
+} from "@mui/material"
+import { useRouter } from "@tanstack/react-router"
+import { useLoginMutation, useRegisterMutation } from "../services/authApi"
+import { useState } from "react"
 
-import { useState } from "react";
+// Определение схемы Zod для разных режимов
+const registerSchema = z.object({
+  name: z.string().min(2, "Минимальная длина имени - 2 символа").max(50),
+  email: z.string().email(),
+  password: z.string().min(6, "Пароль должен содержать минимум 8 символов"),
+})
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
+})
 
 const AuthForm = ({ mode }) => {
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-    name: "",
-  });
+  const { navigate } = useRouter()
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
-  };
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // Выбор нужной схемы валидации в зависимости от режима
+  let schema = mode === "register" ? registerSchema : loginSchema
+
+  // Создание контроллера формы с использованием React-Hook-Form и Zod
+  const methods = useForm({
+    resolver: zodResolver(schema),
+  })
+
+  // Мутации для входа и регистрации
+  const [login, { isLoading: isLoggingIn }] = useLoginMutation()
+  const [register, { isLoading: isRegistering }] = useRegisterMutation()
+
+  // Функция отправки формы
+  const submitHandler = async data => {
     try {
-      const response = await fetch(`/api/auth/${mode}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      const result = await response.json();
-      if (result.token) {
-        localStorage.setItem("token", result.token);
-        alert("Successfully logged in!");
+      if (mode === "register") {
+        await register(data).unwrap()
+        alert("Вы успешно зарегистрированы")
+        navigate("/")
       } else {
-        alert(result.error);
+        const result = await login(data).unwrap()
+        localStorage.setItem("token", result.accessToken)
+        alert("Вы вошли в систему")
+        router.navigate("/dashboard")
       }
     } catch (err) {
-      alert(err.message);
+      setShowErrorMessage(true)
+      console.error(err)
     }
-  };
+  }
 
   return (
     <Dialog open={true}>
       <DialogTitle>{mode === "register" ? "Регистрация" : "Вход"}</DialogTitle>
       <DialogContent>
-        <form className="flex flex-col gap-4 w-100">
+        <form {...methods.handleSubmit(submitHandler)}>
+          {mode === "register" && (
+            <TextField
+              required
+              fullWidth
+              label="Ваше имя"
+              name="name"
+              autoComplete="name"
+              {...methods.register("name")}
+            />
+          )}
           <TextField
             required
             fullWidth
-            label="User name"
-            name="name"
-            autoComplete="name"
-            value={values.name}
-            onChange={handleInputChange}
-          />
-          <TextField
-            required
-            fullWidth
-            label="Email"
+            label="Электронная почта"
             name="email"
             autoComplete="email"
-            value={values.email}
-            onChange={handleInputChange}
+            {...methods.register("email")}
           />
           <TextField
             required
             fullWidth
-            label="Password"
+            label="Пароль"
             name="password"
             type="password"
             autoComplete="current-password"
-            value={values.password}
-            onChange={handleInputChange}
+            {...methods.register("password")}
           />
         </form>
       </DialogContent>
       <DialogActions>
-        <Button>Отменить</Button>
-        <Button type="submit">
+        <Button color="primary" type="submit">
+          Отмена
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={methods.handleSubmit(submitHandler)}
+        >
           {mode === "register" ? "Зарегистрироваться" : "Войти"}
         </Button>
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}
 
-export default AuthForm;
+export default AuthForm
