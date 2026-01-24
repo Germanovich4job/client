@@ -1,6 +1,7 @@
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { jwtDecode } from "jwt-decode"
 import {
   TextField,
   Button,
@@ -9,7 +10,7 @@ import {
   Dialog,
   DialogTitle,
 } from "@mui/material"
-import axios from "axios"
+import axios, { InternalAxiosRequestConfig } from "axios"
 import { Link, useRouter } from "@tanstack/react-router"
 import { useLoginMutation, useRegisterMutation } from "../services/authApi"
 import { useState } from "react"
@@ -20,6 +21,15 @@ const http = axios.create({
   withCredentials: true,
 })
 
+http.interceptors.request.use(
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    const token = localStorage.getItem("accessToken")
+    config.headers.Authorization = token
+
+    return config
+  },
+)
+
 // Определение схемы Zod для разных режимов
 const registerSchema = z.object({
   username: z.string().min(2, "Минимальная длина имени - 2 символа").max(50),
@@ -28,7 +38,7 @@ const registerSchema = z.object({
   email: z.string().email(),
   phone: z.string(),
   password: z.string().min(6, "Пароль должен содержать минимум 8 символов"),
-  passwordRepeat: z
+  repeatPassword: z
     .string()
     .min(6, "Пароль должен содержать минимум 8 символов"),
 })
@@ -43,8 +53,21 @@ const AuthForm = ({ mode }) => {
     console.log("Success")
 
     try {
-      const data = await http.post("auth/register", values)
+      const data = await http.post(
+        `auth/${mode === "register" ? "register" : "login"}`,
+        values,
+      )
       console.log("data", data)
+
+      const token = data.data.accessToken
+      if (!token) {
+        throw new Error("Токены не найдены")
+      }
+      localStorage.setItem("accessToken", `Bearer ${token}`)
+      console.log(token)
+
+      const decodedToken = jwtDecode(token)
+      console.log(decodedToken)
     } catch (error) {
       console.log("error", error)
     }
@@ -149,10 +172,10 @@ const AuthForm = ({ mode }) => {
               required
               fullWidth
               label="Повтор пароля"
-              name="passwordRepeat"
-              type="passwordRepeat"
+              name="repeatPassword"
+              type="repeatPassword"
               autoComplete="current-password"
-              {...methods.register("passwordRepeat")}
+              {...methods.register("repeatPassword")}
             />
           )}
         </form>
