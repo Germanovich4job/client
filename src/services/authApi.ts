@@ -1,14 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-const baseUrl = "http://localhost:3000" // твой бекенд хост + порт
+const baseUrl = "http://localhost:5000/api"
 
-// Настройка базовой конфигурации запросов
 const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Auth"],
   endpoints: builder => ({
-    // Регистрация пользователя
     register: builder.mutation({
       query(body) {
         return {
@@ -19,7 +17,6 @@ const authApi = createApi({
       },
     }),
 
-    // Авторизация пользователя
     login: builder.mutation({
       query(credentials) {
         return {
@@ -30,20 +27,18 @@ const authApi = createApi({
       },
     }),
 
-    // Получение информации о текущем аутентифицированном пользователе
     me: builder.query({
       query() {
         return {
           url: "/auth/me",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Используем локально сохраненный токен
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       },
-      providesTags: ["Auth"], // Определяем зависимость запроса
+      providesTags: ["Auth"],
     }),
 
-    // Обновление токенов (если нужно)
     refreshTokens: builder.mutation({
       query(refreshToken) {
         return {
@@ -56,7 +51,6 @@ const authApi = createApi({
   }),
 })
 
-// Экспортирование хуков и методов
 export const {
   useRegisterMutation,
   useLoginMutation,

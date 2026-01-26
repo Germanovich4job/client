@@ -1,5 +1,6 @@
-"use client"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+
+import { CreateProductDTO, ProductDTO } from "../dto/product.dto"
 
 const BASE_URL = "http://localhost:5000/api/"
 
@@ -23,7 +24,7 @@ export const productsApi = createApi({
     }),
     getProductById: builder.query({
       query: id => `/products/${id}`,
-      providesTags: (result, error, arg) => [{ type: "Product", id: arg }],
+      providesTags: arg => [{ type: "Product", id: arg }],
     }),
     createProduct: builder.mutation({
       query: body => ({
