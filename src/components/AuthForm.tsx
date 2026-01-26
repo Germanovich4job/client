@@ -10,10 +10,11 @@ import {
   Dialog,
   DialogTitle,
 } from "@mui/material"
-import axios, { InternalAxiosRequestConfig } from "axios"
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios"
 import { Link, useRouter } from "@tanstack/react-router"
 import { useLoginMutation, useRegisterMutation } from "../services/authApi"
 import { useState } from "react"
+import { error } from "console"
 
 const http = axios.create({
   baseURL: "http://localhost:5000/api/",
@@ -27,6 +28,20 @@ http.interceptors.request.use(
     config.headers.Authorization = token
 
     return config
+  },
+)
+
+http.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response
+  },
+  error => {
+    if (error.response?.status === 401) {
+      console.log("error", error)
+      const cookies = document.cookie
+      console.log("cookies", cookies)
+    }
+    return Promise.reject(error)
   },
 )
 

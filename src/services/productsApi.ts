@@ -1,16 +1,13 @@
 "use client"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-const BASE_URL = "http://localhost:5000"
-
-const username = "admin"
-const password = "admin"
-const authToken = btoa(`${username}:${password}`)
+const BASE_URL = "http://localhost:5000/api/"
 
 const baseQueryConfig = fetchBaseQuery({
   baseUrl: BASE_URL,
   prepareHeaders: headers => {
-    headers.set("Authorization", `Basic ${authToken}`)
+    const token = localStorage.getItem("accessToken")
+    headers.set("Authorization", `${token}`)
     return headers
   },
 })
