@@ -17,7 +17,6 @@ import {
   useGetAllProductsQuery,
   useDeleteProductMutation,
 } from "../services/productsApi"
-import ProductForm from "./ProductForm"
 import { useNavigate } from "@tanstack/react-router"
 
 import Box from "@mui/material/Box"

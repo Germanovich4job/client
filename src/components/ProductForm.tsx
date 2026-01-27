@@ -13,6 +13,7 @@ import {
   DialogActions,
   DialogTitle,
   CircularProgress,
+  Card,
 } from "@mui/material"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 import { useDispatch } from "react-redux"
@@ -132,7 +133,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
   }
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Card className="w-3/4 min-w-100 m-4">
       <DialogTitle>
         {mode === "add" ? "Добавление продукта" : "Редактирование продукта"}
       </DialogTitle>
@@ -226,7 +227,7 @@ const ProductForm = ({ open, product, onClose, mode }: ProductFormProps) => {
           </DialogActions>
         </form>
       </DialogContent>
-    </Dialog>
+    </Card>
   )
 }
 
