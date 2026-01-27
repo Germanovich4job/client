@@ -1,6 +1,5 @@
 import { Outlet } from "@tanstack/react-router"
 import Header from "../components/Header"
-import { MuiSidebar } from "../components/MuiSidebar"
 import "../App.css"
 
 export const AppLayout = () => {
@@ -11,9 +10,7 @@ export const AppLayout = () => {
           <Header />
         </header>
         <main className="flex h-full w-full">
-          <div className="w-72 bg-gray-200">
-            <MuiSidebar />
-          </div>
+          <div className="w-72 bg-gray-200"></div>
           <div className="overflow-auto h-full w-full">
             <Outlet />
           </div>
