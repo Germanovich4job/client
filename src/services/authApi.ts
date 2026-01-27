@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 const baseUrl = "http://localhost:5000/api"
 
-const authApi = createApi({
+export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Auth"],
@@ -57,5 +57,3 @@ export const {
   useMeQuery,
   useRefreshTokensMutation,
 } = authApi
-
-export default authApi
