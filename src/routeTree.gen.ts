@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products/$productId'
 import { Route as ProductsEditIndexRouteImport } from './routes/products/edit/index'
@@ -16,6 +17,11 @@ import { Route as ProductsAddIndexRouteImport } from './routes/products/add/inde
 import { Route as AuthRegisterIndexRouteImport } from './routes/auth/register/index'
 import { Route as AuthLoginIndexRouteImport } from './routes/auth/login/index'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
@@ -48,6 +54,7 @@ const AuthLoginIndexRoute = AuthLoginIndexRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/products': typeof ProductsIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/products/edit': typeof ProductsEditIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/products': typeof ProductsIndexRoute
   '/auth/login': typeof AuthLoginIndexRoute
@@ -65,6 +73,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/products/': typeof ProductsIndexRoute
   '/auth/login/': typeof AuthLoginIndexRoute
@@ -75,6 +84,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/products/$productId'
     | '/products'
     | '/auth/login'
@@ -83,6 +93,7 @@ export interface FileRouteTypes {
     | '/products/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/products/$productId'
     | '/products'
     | '/auth/login'
@@ -91,6 +102,7 @@ export interface FileRouteTypes {
     | '/products/edit'
   id:
     | '__root__'
+    | '/'
     | '/products/$productId'
     | '/products/'
     | '/auth/login/'
@@ -100,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
   AuthLoginIndexRoute: typeof AuthLoginIndexRoute
@@ -110,6 +123,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
@@ -156,6 +176,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
   ProductsIndexRoute: ProductsIndexRoute,
   AuthLoginIndexRoute: AuthLoginIndexRoute,

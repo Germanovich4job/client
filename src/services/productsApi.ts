@@ -1,17 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { CreateProductDTO, ProductDTO } from "../dto/product.dto"
-
-const BASE_URL = "http://localhost:5000/api/"
+const BASE_URL = "http://localhost:5000/api/";
 
 const baseQueryConfig = fetchBaseQuery({
   baseUrl: BASE_URL,
   prepareHeaders: headers => {
-    const token = localStorage.getItem("accessToken")
-    headers.set("Authorization", `${token}`)
-    return headers
+    const token = localStorage.getItem("accessToken");
+    headers.set("Authorization", `${token}`);
+    return headers;
   },
-})
+});
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
@@ -52,7 +50,7 @@ export const productsApi = createApi({
       invalidatesTags: (result, error, arg) => ["Product"],
     }),
   }),
-})
+});
 
 export const {
   useGetAllProductsQuery,
@@ -60,4 +58,4 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
-} = productsApi
+} = productsApi;
