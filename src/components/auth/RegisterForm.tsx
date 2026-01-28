@@ -46,7 +46,7 @@ export const RegisterForm = () => {
       const decodedToken = jwtDecode(token);
       console.log(decodedToken);
     } finally {
-      navigate({ to: "/auth/login" });
+      // navigate({ to: "/auth/login" });
     }
   };
 
