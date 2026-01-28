@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,16 +11,16 @@ import {
   Paper,
   Button,
   AppBar,
-} from "@mui/material"
+} from "@mui/material";
 
 import {
   useGetAllProductsQuery,
   useDeleteProductMutation,
-} from "../services/productsApi"
-import { useNavigate } from "@tanstack/react-router"
+} from "../services/productsApi";
+import { useNavigate } from "@tanstack/react-router";
 
-import Box from "@mui/material/Box"
-import { DataGrid, GridColDef } from "@mui/x-data-grid"
+import Box from "@mui/material/Box";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef<(typeof rows)[number]>[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -59,7 +59,7 @@ const columns: GridColDef<(typeof rows)[number]>[] = [
     width: 250,
     renderCell: () => <Button>Совершить действие</Button>,
   },
-]
+];
 
 const rows = [
   { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
@@ -71,38 +71,38 @@ const rows = [
   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-]
+];
 
 const ProductList = () => {
-  const [openAddModal, setOpenAddModal] = useState(false)
-  const [openEditModal, setOpenEditModal] = useState(false)
-  const [currentProductForEdit, setCurrentProductForEdit] = useState(null)
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [currentProductForEdit, setCurrentProductForEdit] = useState(null);
 
-  const navigate = useNavigate({ from: "/products" })
+  const navigate = useNavigate({ from: "/products" });
 
-  const { data: products, isError } = useGetAllProductsQuery()
+  const { data: products, isError } = useGetAllProductsQuery();
   const [deleteProduct, { isLoading: deleteProductLoading }] =
-    useDeleteProductMutation()
+    useDeleteProductMutation();
 
   const handleAddProduct = () => {
-    setOpenAddModal(true)
-  }
+    setOpenAddModal(true);
+  };
 
   const handleEditProduct = product => {
-    setCurrentProductForEdit(product)
-    setOpenEditModal(true)
-  }
+    setCurrentProductForEdit(product);
+    setOpenEditModal(true);
+  };
 
   const handleDeleteProduct = id => {
-    deleteProduct(id)
-  }
+    deleteProduct(id);
+  };
 
   const handleOpen = (id: string) => {
-    navigate({ to: `/products/${id}` })
-  }
+    navigate({ to: `/products/${id}` });
+  };
 
   return (
-    <div className="w-full p-4 gap-2 flex flex-col">
+    <div className="w-full gap-2 flex flex-col">
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
@@ -169,7 +169,7 @@ const ProductList = () => {
         </Table>
       </TableContainer>
     </div>
-  )
-}
+  );
+};
 
-export default ProductList
+export default ProductList;
