@@ -36,7 +36,7 @@ const Header = () => {
           padding: "8px",
           paddingLeft: "20px",
           maxWidth: "inherit",
-          height: "48px",
+          height: "52px",
         }}
       >
         <Typography
