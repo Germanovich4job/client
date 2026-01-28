@@ -49,11 +49,8 @@ const Header = () => {
           <Button href="/auth/login" color="inherit">
             Войти
           </Button>
-          <Button href="/auth/register" color="inherit">
-            Зарегистрироваться
-          </Button>
           <Button href="/logout" color="inherit">
-            <Logout fontSize="large" className="scale-75" />
+            <Logout fontSize="large" className="scale-60" />
           </Button>
         </div>
       </AppBar>
