@@ -11,7 +11,7 @@ const Header = () => {
   const handleSelect = (_, i) => {
     const tabPaths = {
       0: "/products",
-      1: "/warehousers",
+      1: "/warehouses",
       2: "/shipments",
       3: "/movements",
       4: "/returns",

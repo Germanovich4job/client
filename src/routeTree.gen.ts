@@ -10,7 +10,15 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WarehousesIndexRouteImport } from './routes/warehouses/index'
+import { Route as ShipmentsIndexRouteImport } from './routes/shipments/index'
+import { Route as ReturnsIndexRouteImport } from './routes/returns/index'
 import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as PricesIndexRouteImport } from './routes/prices/index'
+import { Route as MovementsIndexRouteImport } from './routes/movements/index'
+import { Route as EmployeesIndexRouteImport } from './routes/employees/index'
+import { Route as ContractorsIndexRouteImport } from './routes/contractors/index'
+import { Route as AnalyticsIndexRouteImport } from './routes/analytics/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products/$productId'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
@@ -22,9 +30,49 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WarehousesIndexRoute = WarehousesIndexRouteImport.update({
+  id: '/warehouses/',
+  path: '/warehouses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShipmentsIndexRoute = ShipmentsIndexRouteImport.update({
+  id: '/shipments/',
+  path: '/shipments/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnsIndexRoute = ReturnsIndexRouteImport.update({
+  id: '/returns/',
+  path: '/returns/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/products/',
   path: '/products/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricesIndexRoute = PricesIndexRouteImport.update({
+  id: '/prices/',
+  path: '/prices/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MovementsIndexRoute = MovementsIndexRouteImport.update({
+  id: '/movements/',
+  path: '/movements/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmployeesIndexRoute = EmployeesIndexRouteImport.update({
+  id: '/employees/',
+  path: '/employees/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContractorsIndexRoute = ContractorsIndexRouteImport.update({
+  id: '/contractors/',
+  path: '/contractors/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsIndexRoute = AnalyticsIndexRouteImport.update({
+  id: '/analytics/',
+  path: '/analytics/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsProductIdRoute = ProductsProductIdRouteImport.update({
@@ -58,7 +106,15 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/products/$productId': typeof ProductsProductIdRoute
+  '/analytics': typeof AnalyticsIndexRoute
+  '/contractors': typeof ContractorsIndexRoute
+  '/employees': typeof EmployeesIndexRoute
+  '/movements': typeof MovementsIndexRoute
+  '/prices': typeof PricesIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/returns': typeof ReturnsIndexRoute
+  '/shipments': typeof ShipmentsIndexRoute
+  '/warehouses': typeof WarehousesIndexRoute
   '/products/add': typeof ProductsAddIndexRoute
   '/products/edit': typeof ProductsEditIndexRoute
 }
@@ -67,7 +123,15 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/products/$productId': typeof ProductsProductIdRoute
+  '/analytics': typeof AnalyticsIndexRoute
+  '/contractors': typeof ContractorsIndexRoute
+  '/employees': typeof EmployeesIndexRoute
+  '/movements': typeof MovementsIndexRoute
+  '/prices': typeof PricesIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/returns': typeof ReturnsIndexRoute
+  '/shipments': typeof ShipmentsIndexRoute
+  '/warehouses': typeof WarehousesIndexRoute
   '/products/add': typeof ProductsAddIndexRoute
   '/products/edit': typeof ProductsEditIndexRoute
 }
@@ -77,7 +141,15 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/products/$productId': typeof ProductsProductIdRoute
+  '/analytics/': typeof AnalyticsIndexRoute
+  '/contractors/': typeof ContractorsIndexRoute
+  '/employees/': typeof EmployeesIndexRoute
+  '/movements/': typeof MovementsIndexRoute
+  '/prices/': typeof PricesIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/returns/': typeof ReturnsIndexRoute
+  '/shipments/': typeof ShipmentsIndexRoute
+  '/warehouses/': typeof WarehousesIndexRoute
   '/products/add/': typeof ProductsAddIndexRoute
   '/products/edit/': typeof ProductsEditIndexRoute
 }
@@ -88,7 +160,15 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/products/$productId'
+    | '/analytics'
+    | '/contractors'
+    | '/employees'
+    | '/movements'
+    | '/prices'
     | '/products'
+    | '/returns'
+    | '/shipments'
+    | '/warehouses'
     | '/products/add'
     | '/products/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -97,7 +177,15 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/products/$productId'
+    | '/analytics'
+    | '/contractors'
+    | '/employees'
+    | '/movements'
+    | '/prices'
     | '/products'
+    | '/returns'
+    | '/shipments'
+    | '/warehouses'
     | '/products/add'
     | '/products/edit'
   id:
@@ -106,7 +194,15 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/products/$productId'
+    | '/analytics/'
+    | '/contractors/'
+    | '/employees/'
+    | '/movements/'
+    | '/prices/'
     | '/products/'
+    | '/returns/'
+    | '/shipments/'
+    | '/warehouses/'
     | '/products/add/'
     | '/products/edit/'
   fileRoutesById: FileRoutesById
@@ -116,7 +212,15 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
+  AnalyticsIndexRoute: typeof AnalyticsIndexRoute
+  ContractorsIndexRoute: typeof ContractorsIndexRoute
+  EmployeesIndexRoute: typeof EmployeesIndexRoute
+  MovementsIndexRoute: typeof MovementsIndexRoute
+  PricesIndexRoute: typeof PricesIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  ReturnsIndexRoute: typeof ReturnsIndexRoute
+  ShipmentsIndexRoute: typeof ShipmentsIndexRoute
+  WarehousesIndexRoute: typeof WarehousesIndexRoute
   ProductsAddIndexRoute: typeof ProductsAddIndexRoute
   ProductsEditIndexRoute: typeof ProductsEditIndexRoute
 }
@@ -130,11 +234,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/warehouses/': {
+      id: '/warehouses/'
+      path: '/warehouses'
+      fullPath: '/warehouses'
+      preLoaderRoute: typeof WarehousesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipments/': {
+      id: '/shipments/'
+      path: '/shipments'
+      fullPath: '/shipments'
+      preLoaderRoute: typeof ShipmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns/': {
+      id: '/returns/'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof ReturnsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prices/': {
+      id: '/prices/'
+      path: '/prices'
+      fullPath: '/prices'
+      preLoaderRoute: typeof PricesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movements/': {
+      id: '/movements/'
+      path: '/movements'
+      fullPath: '/movements'
+      preLoaderRoute: typeof MovementsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employees/': {
+      id: '/employees/'
+      path: '/employees'
+      fullPath: '/employees'
+      preLoaderRoute: typeof EmployeesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contractors/': {
+      id: '/contractors/'
+      path: '/contractors'
+      fullPath: '/contractors'
+      preLoaderRoute: typeof ContractorsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics/': {
+      id: '/analytics/'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/$productId': {
@@ -180,7 +340,15 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
+  AnalyticsIndexRoute: AnalyticsIndexRoute,
+  ContractorsIndexRoute: ContractorsIndexRoute,
+  EmployeesIndexRoute: EmployeesIndexRoute,
+  MovementsIndexRoute: MovementsIndexRoute,
+  PricesIndexRoute: PricesIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  ReturnsIndexRoute: ReturnsIndexRoute,
+  ShipmentsIndexRoute: ShipmentsIndexRoute,
+  WarehousesIndexRoute: WarehousesIndexRoute,
   ProductsAddIndexRoute: ProductsAddIndexRoute,
   ProductsEditIndexRoute: ProductsEditIndexRoute,
 }
