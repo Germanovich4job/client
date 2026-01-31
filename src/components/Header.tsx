@@ -46,10 +46,10 @@ const Header = () => {
           <Link to="/">НОВА СНАБ</Link>
         </Typography>
         <div className="flex flex-row justify-end">
-          <Button href="/auth/login" color="inherit">
+          <Button href="/auth/login" color="inherit" size="small">
             Войти
           </Button>
-          <Button href="/logout" color="inherit">
+          <Button href="/logout" color="inherit" size="small">
             <Logout fontSize="large" className="scale-60" />
           </Button>
         </div>
