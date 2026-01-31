@@ -38,7 +38,6 @@ const ProductCard = ({ id }: { id: string }) => {
       <ProductForm
         mode="edit"
         onClose={() => setEditDialog(false)}
-        open={true}
         product={product}
       />
     );
