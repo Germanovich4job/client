@@ -1,70 +1,107 @@
-"use client"
-
-import React from "react"
 import {
-  Card,
-  CardMedia,
-  CardContent,
   Typography,
-  CardActionArea,
-  CardActions,
   Button,
-} from "@mui/material"
+  LinearProgress,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
+} from "@mui/material";
 
-import { useGetProductByIdQuery } from "../services/productsApi"
+import { useDeleteProductMutation, useGetProductByIdQuery } from "../services";
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
-interface ProductCardProps {
-  product: {
-    id: string
-    title: string
-    description: string
-    price: number
-    imageUrl: string
-    category?: string
-    manufacturer?: string
+const ProductCard = ({ id }: { id: string }) => {
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const navigate = useNavigate();
+  const { data: product } = useGetProductByIdQuery(id);
+
+  const [deleteProduct, { isLoading }] = useDeleteProductMutation();
+
+  const handleDeleteProduct = async () => {
+    await deleteProduct(id)
+      .then(res => {
+        navigate({ to: "/products" });
+      })
+      .catch(res => false);
+  };
+
+  if (isLoading) {
+    return <LinearProgress />;
   }
-}
 
-const ProductCard = ({ id }) => {
-  const { data: product, isLoading } = useGetProductByIdQuery(id)
-
-  if (!product) return
   return (
-    <Card>
-      <CardActionArea>
+    <div className="flex flex-row-reverse gap-4 min-w-220 max-w-280 justify-between border-blue-100 border p-4 rounded-sm">
+      {product?.imageUrl && (
         <img
-          src={`http://localhost:3000/${product?.imageUrl}`}
+          src={product.imageUrl}
           alt={`Фото ${product.title}`}
+          height={400}
+          width={400}
+          className="object-cover h-100 rounded-lg"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {product?.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {product?.description}
-          </Typography>
-          <Typography variant="subtitle1" color="primary.main">
-            Цена: {product.price.toLocaleString()} руб.
-          </Typography>
-          {product.category && (
-            <Typography variant="caption" color="text.secondary">
-              Категория: {product.category}
-            </Typography>
-          )}
-          {product.manufacturer && (
-            <Typography variant="caption" color="text.secondary">
-              Производитель: {product.manufacturer}
-            </Typography>
-          )}
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Подробнее
-        </Button>
-      </CardActions>
-    </Card>
-  )
-}
+      )}
+      <div className="min-w-100 max-w-200 flex flex-col gap-4">
+        <Typography gutterBottom variant="h5" component="div">
+          {product?.title}
+        </Typography>
+        <Typography variant="subtitle1" color="primary.main">
+          Цена: {product?.price.toLocaleString()} руб.
+        </Typography>
+        <Typography color="text.secondary">
+          Категория: {product?.category}
+        </Typography>
+        <Typography color="text.secondary">
+          Производитель: {product?.manufacturer}
+        </Typography>
+        <Typography color="text.secondary">
+          Описание: {product?.description}
+        </Typography>
+        <div className="flex flex-row mt-auto gap-2">
+          <Button
+            size="small"
+            color="primary"
+            variant="outlined"
+            onClick={() => navigate({ to: "/products/$productId/edit" })}
+          >
+            Редактировать
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            variant="outlined"
+            onClick={() => setDeleteDialog(true)}
+          >
+            Удалить
+          </Button>
+        </div>
+      </div>
+      <Dialog open={deleteDialog} onClose={() => setDeleteDialog(false)}>
+        <DialogTitle>Подтвердите удаление</DialogTitle>
+        <DialogContent>
+          Данная позиция будет удалена из номенклатуры товаров. Действие нельзя
+          будет отменить
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="text"
+            color="warning"
+            onClick={() => setDeleteDialog(false)}
+          >
+            Выйти из диалога
+          </Button>
+          <Button
+            variant="contained"
+            color="warning"
+            onClick={handleDeleteProduct}
+          >
+            Удалить
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
 
-export default ProductCard
+export default ProductCard;

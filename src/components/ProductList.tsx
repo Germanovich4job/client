@@ -4,7 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
-import { CircularProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 
 const ProductList = () => {
   const navigate = useNavigate({ from: "/products" });
@@ -52,7 +52,7 @@ const ProductList = () => {
 
   return (
     <Box sx={{ height: "100%", width: "100%", paddingBottom: "100px" }}>
-      {isLoading && <CircularProgress />}
+      {isLoading && <LinearProgress />}
       {products && (
         <DataGrid
           sx={{
