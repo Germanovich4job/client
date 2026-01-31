@@ -1,14 +1,14 @@
 import { AppBar, Typography, Button } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Box, Card, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleSelect = (_, i) => {
+  const handleSelect = (_, i: number) => {
     const tabPaths = {
       0: "/products",
       1: "/warehouses",
@@ -43,7 +43,7 @@ const Header = () => {
           variant="h6"
           className="text-blue-100 hover:text-white transition-all"
         >
-          <Link to="/">НОВА СНАБ</Link>
+          <Link to="/">СПБ-СНАБЖЕНИЕ</Link>
         </Typography>
         <div className="flex flex-row justify-end">
           <Button href="/auth/login" color="inherit" size="small">

@@ -11,8 +11,10 @@ import {
 import { useDeleteProductMutation, useGetProductByIdQuery } from "../services";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import ProductForm from "./ProductForm";
 
 const ProductCard = ({ id }: { id: string }) => {
+  const [editDialog, setEditDialog] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const navigate = useNavigate();
   const { data: product } = useGetProductByIdQuery(id);
@@ -29,6 +31,17 @@ const ProductCard = ({ id }: { id: string }) => {
 
   if (isLoading) {
     return <LinearProgress />;
+  }
+
+  if (editDialog) {
+    return (
+      <ProductForm
+        mode="edit"
+        onClose={() => setEditDialog(false)}
+        open={true}
+        product={product}
+      />
+    );
   }
 
   return (
@@ -63,7 +76,7 @@ const ProductCard = ({ id }: { id: string }) => {
             size="small"
             color="primary"
             variant="outlined"
-            onClick={() => navigate({ to: "/products/$productId/edit" })}
+            onClick={() => setEditDialog(true)}
           >
             Редактировать
           </Button>

@@ -37,6 +37,22 @@ const ProductList = () => {
       flex: 1,
     },
     {
+      field: "imageUrl",
+      headerName: "",
+      minWidth: 100,
+      flex: 1,
+      renderCell: ({ row }) => (
+        <div className="flex flex-row align-middle p-2">
+          <img
+            src={row.imageUrl}
+            width={36}
+            height={36}
+            className="rounded-sm"
+          />
+        </div>
+      ),
+    },
+    {
       field: "price",
       headerName: "Стоимость",
       editable: false,

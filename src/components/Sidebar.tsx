@@ -6,7 +6,7 @@ export const Sidebar = () => {
     <div>
       <Button size="small" href="/products/add" variant="contained">
         <Add fontSize="small" />
-        Добавить
+        Добавить позицию
       </Button>
     </div>
   );
