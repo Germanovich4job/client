@@ -12,7 +12,7 @@ export const AppLayout = () => {
         <main className="flex h-full w-full flex-row gap-4 p-6">
           <div className="w-72 bg-blue-50"></div>
 
-          <div className="overflow-auto h-full w-full bg-blue-50">
+          <div className="overflow-auto h-full w-full">
             <Outlet />
           </div>
         </main>
