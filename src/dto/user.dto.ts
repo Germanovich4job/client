@@ -1,14 +1,15 @@
 export interface UserDTO {
-  username: string
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  password: string
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+  role: ["ADMIN"];
 }
 
 export interface RegisterFormData extends UserDTO {
-  repeatPassword: string
+  repeatPassword: string;
 }
 
 export interface LoginFormData extends Pick<UserDTO, "email" | "password"> {}

@@ -71,7 +71,7 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
         })
         .catch(err => console.error("Ошибка при создании продукта:", err));
     } else if (mode === "edit") {
-      await updateProduct({ id: product.id, payload: formData })
+      await updateProduct({ id: product.id, data: formData })
         .unwrap()
         .then(() => {
           onClose();

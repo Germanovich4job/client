@@ -83,6 +83,9 @@ const ProductList = () => {
           columns={columns}
           onRowClick={handleOpen}
           disableRowSelectionOnClick
+          disableColumnSorting
+          disableColumnFilter
+          disableVirtualization
         />
       )}
     </Box>

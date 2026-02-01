@@ -1,29 +1,31 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { LoginFormData, RegisterFormData } from "../components/auth/schema";
+import { UserDTO } from "../dto";
 
-const baseUrl = "http://localhost:5000/api"
+const baseUrl = "http://localhost:5000/api";
 
 export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({ baseUrl }),
   tagTypes: ["Auth"],
   endpoints: builder => ({
-    register: builder.mutation({
+    register: builder.mutation<UserDTO, RegisterFormData>({
       query(body) {
         return {
           url: "/auth/register",
           method: "POST",
           body,
-        }
+        };
       },
     }),
 
-    login: builder.mutation({
+    login: builder.mutation<{ accessToken: string }, LoginFormData>({
       query(credentials) {
         return {
           url: "/auth/login",
           method: "POST",
           body: credentials,
-        }
+        };
       },
     }),
 
@@ -34,7 +36,7 @@ export const authApi = createApi({
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
-        }
+        };
       },
       providesTags: ["Auth"],
     }),
@@ -45,15 +47,15 @@ export const authApi = createApi({
           url: "/auth/refresh",
           method: "POST",
           body: { refreshToken },
-        }
+        };
       },
     }),
   }),
-})
+});
 
 export const {
   useRegisterMutation,
   useLoginMutation,
   useMeQuery,
   useRefreshTokensMutation,
-} = authApi
+} = authApi;

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { CreateProductDTO, ProductDTO, UpdateProductDTO } from "../dto";
 
 const BASE_URL = "http://localhost:5000/api/";
 
@@ -16,15 +17,16 @@ export const productsApi = createApi({
   baseQuery: baseQueryConfig,
   tagTypes: ["Product"],
   endpoints: builder => ({
-    getAllProducts: builder.query({
+    getAllProducts: builder.query<ProductDTO[], string>({
       query: () => "/products",
       providesTags: ["Product"],
     }),
-    getProductById: builder.query({
+    getProductById: builder.query<ProductDTO, string>({
       query: id => `/products/${id}`,
-      providesTags: arg => [{ type: "Product", id: arg }],
+      providesTags: result =>
+        result ? [{ type: "Product", id: result.id }] : [],
     }),
-    createProduct: builder.mutation({
+    createProduct: builder.mutation<ProductDTO, CreateProductDTO>({
       query: body => ({
         url: "/products",
         method: "POST",
@@ -32,22 +34,23 @@ export const productsApi = createApi({
       }),
       invalidatesTags: ["Product"],
     }),
-    updateProduct: builder.mutation({
-      query: ({ id, payload }) => ({
+    updateProduct: builder.mutation<
+      UpdateProductDTO,
+      { id: string; data: CreateProductDTO }
+    >({
+      query: ({ id, data }) => ({
         url: `/products/${id}`,
         method: "PATCH",
-        body: payload,
+        body: data,
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Product", id: arg.id },
-      ],
+      invalidatesTags: (_res, _err, { id }) => [{ type: "Product", id }],
     }),
-    deleteProduct: builder.mutation({
+    deleteProduct: builder.mutation<string, void>({
       query: id => ({
         url: `/products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, arg) => ["Product"],
+      invalidatesTags: () => ["Product"],
     }),
   }),
 });
