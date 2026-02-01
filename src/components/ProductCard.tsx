@@ -11,7 +11,7 @@ import {
 import { useDeleteProductMutation, useGetProductByIdQuery } from "../services";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import ProductForm from "./ProductForm";
+import ProductForm from "./ProductForm/ProductForm";
 
 const ProductCard = ({ id }: { id: string }) => {
   const [editDialog, setEditDialog] = useState(false);

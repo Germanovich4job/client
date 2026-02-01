@@ -1,5 +1,5 @@
 export * from "./Header";
 export * from "./ProductCard";
-export * from "./ProductForm";
+export * from "./ProductForm/ProductForm";
 export * from "./ProductList";
 export * from "./auth";
