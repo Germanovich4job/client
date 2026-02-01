@@ -1,14 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { jwtDecode } from "jwt-decode";
 
 import { RegisterFormData, registerSchema } from "./schema";
 import { TextField, Button, Dialog, Typography } from "@mui/material";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useRegisterMutation } from "../../services";
-import { http } from "../../api";
 
 export const RegisterForm = () => {
+  const { navigate } = useRouter();
+  const [register] = useRegisterMutation();
   const {
     watch,
     formState: { errors },
@@ -18,10 +18,6 @@ export const RegisterForm = () => {
     resolver: zodResolver(registerSchema),
     defaultValues: {},
   });
-
-  const { navigate } = useRouter();
-
-  const [register] = useRegisterMutation();
 
   const {
     username,
@@ -33,20 +29,12 @@ export const RegisterForm = () => {
     phone,
   } = watch();
 
-  const handleFinish = async values => {
+  const handleFinish = async (values: RegisterFormData) => {
     try {
-      const data = await http.post(`auth/register`, values);
-
-      const token = data.data.accessToken;
-      if (!token) {
-        throw new Error("Токены не найдены");
-      }
-      localStorage.setItem("accessToken", `Bearer ${token}`);
-
-      const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
-    } finally {
-      // navigate({ to: "/auth/login" });
+      await register(values).unwrap();
+      navigate({ to: "/auth/login" });
+    } catch (e) {
+      if (e) console.error(e);
     }
   };
 
@@ -111,13 +99,12 @@ export const RegisterForm = () => {
             label="Пароль"
             type="password"
             value={password}
-            onChange={e => {
-              console.log(typeof e.target.value);
+            onChange={e =>
               setValue("password", e.target.value ?? "", {
                 shouldValidate: true,
                 shouldDirty: true,
-              });
-            }}
+              })
+            }
             error={!!errors.password}
             helperText={errors.password?.message}
           />

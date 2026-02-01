@@ -7,17 +7,29 @@ const baseQueryConfig = fetchBaseQuery({
   baseUrl: BASE_URL,
   prepareHeaders: headers => {
     const token = localStorage.getItem("accessToken");
-    headers.set("Authorization", `${token}`);
+    if (token) {
+      headers.set("Authorization", `${token}`);
+    }
     return headers;
   },
 });
 
+const customFetchBaseQuery = async (...args) => {
+  const result = await baseQueryConfig(...args);
+
+  if (result.error && result.error.status === 401) {
+    console.error("Авторизация не пройдена:", result.error);
+  }
+
+  return result;
+};
+
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: baseQueryConfig,
+  baseQuery: customFetchBaseQuery,
   tagTypes: ["Product"],
   endpoints: builder => ({
-    getAllProducts: builder.query<ProductDTO[], string>({
+    getAllProducts: builder.query<ProductDTO[], void>({
       query: () => "/products",
       providesTags: ["Product"],
     }),
@@ -45,7 +57,7 @@ export const productsApi = createApi({
       }),
       invalidatesTags: (_res, _err, { id }) => [{ type: "Product", id }],
     }),
-    deleteProduct: builder.mutation<string, void>({
+    deleteProduct: builder.mutation<void, string>({
       query: id => ({
         url: `/products/${id}`,
         method: "DELETE",

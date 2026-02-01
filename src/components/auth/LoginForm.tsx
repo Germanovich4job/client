@@ -1,17 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { jwtDecode } from "jwt-decode";
 
-import {
-  LoginFormData,
-  loginSchema,
-  RegisterFormData,
-  registerSchema,
-} from "./schema";
+import { LoginFormData, loginSchema } from "./schema";
 import { TextField, Button, Dialog, Typography } from "@mui/material";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useLoginMutation } from "../../services";
-import { http } from "../../api";
 
 export const LoginForm = () => {
   const {
@@ -30,20 +23,18 @@ export const LoginForm = () => {
 
   const { email, password } = watch();
 
-  const handleFinish = async values => {
+  const handleFinish = async (values: LoginFormData) => {
     try {
-      const data = await http.post(`auth/login`, values);
+      const { data } = await login(values);
 
-      const token = data.data.accessToken;
+      const token = data?.accessToken;
       if (!token) {
         throw new Error("Токены не найдены");
       }
       localStorage.setItem("accessToken", `Bearer ${token}`);
-
-      const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
-    } finally {
       navigate({ to: "/" });
+    } catch (e) {
+      console.error(e);
     }
   };
 

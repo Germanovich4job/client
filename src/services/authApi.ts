@@ -28,19 +28,6 @@ export const authApi = createApi({
         };
       },
     }),
-
-    me: builder.query({
-      query() {
-        return {
-          url: "/auth/me",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        };
-      },
-      providesTags: ["Auth"],
-    }),
-
     refreshTokens: builder.mutation({
       query(refreshToken) {
         return {
@@ -56,6 +43,5 @@ export const authApi = createApi({
 export const {
   useRegisterMutation,
   useLoginMutation,
-  useMeQuery,
   useRefreshTokensMutation,
 } = authApi;
