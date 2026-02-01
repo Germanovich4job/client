@@ -44,14 +44,14 @@ const ProductCard = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="flex flex-row-reverse gap-4 min-w-220 max-w-280 justify-between border-blue-100 border p-4 rounded-sm">
+    <div className="flex flex-row-reverse gap-4 w-200  justify-between border-blue-100 border p-4 rounded-sm">
       {product?.imageUrl && (
         <img
           src={product.imageUrl}
           alt={`Фото ${product.title}`}
           height={400}
           width={400}
-          className="object-cover h-100 rounded-lg"
+          className="object-cover h-50 rounded-lg"
         />
       )}
       <div className="min-w-100 max-w-200 flex flex-col gap-4">
