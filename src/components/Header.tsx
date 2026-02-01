@@ -41,12 +41,7 @@ const Header = () => {
         }}
       >
         <div className="flex flex-row items-center">
-          <Typography
-            variant="h6"
-            className="text-blue-100 hover:text-white transition-all"
-          >
-            <Link to="/">СПБ-СНАБЖЕНИЕ</Link>
-          </Typography>
+          <Link to="/">СПБ-СНАБЖЕНИЕ</Link>
           <ActionDropdown
             label="Выберите доступное действие"
             actions={[

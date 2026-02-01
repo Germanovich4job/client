@@ -162,6 +162,9 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
           >
             Выберите изображение
           </Button>
+          {imageUrl && (
+            <img src={imageUrl} width={36} height={36} className="rounded-sm" />
+          )}
           <input
             type="file"
             accept="image/*"
