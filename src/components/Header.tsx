@@ -3,6 +3,7 @@ import { Logout } from "@mui/icons-material";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
+import { ActionDropdown } from "./ActionDropdown";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -39,12 +40,25 @@ const Header = () => {
           height: "52px",
         }}
       >
-        <Typography
-          variant="h6"
-          className="text-blue-100 hover:text-white transition-all"
-        >
-          <Link to="/">СПБ-СНАБЖЕНИЕ</Link>
-        </Typography>
+        <div className="flex flex-row items-center">
+          <Typography
+            variant="h6"
+            className="text-blue-100 hover:text-white transition-all"
+          >
+            <Link to="/">СПБ-СНАБЖЕНИЕ</Link>
+          </Typography>
+          <ActionDropdown
+            label="Выберите доступное действие"
+            actions={[
+              {
+                action: () => navigate({ to: "/products/add" }),
+                label: "Добавить продукт",
+                key: "ADD_PRODUCT",
+              },
+            ]}
+          />
+        </div>
+
         <div className="flex flex-row justify-end">
           <Button href="/auth/login" color="inherit" size="small">
             Войти
