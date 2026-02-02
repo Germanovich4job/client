@@ -162,7 +162,6 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
             ref={fileInputRef}
           />
         </Box>
-        ы
         <div className="flex flex-row justify-end gap-2">
           <Button onClick={onClose}>Выйти</Button>
           <Button
