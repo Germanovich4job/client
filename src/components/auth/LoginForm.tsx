@@ -70,10 +70,7 @@ export const LoginForm = () => {
             helperText={errors.password?.message}
           />
         </div>
-        <div className="flex flex-row justify-end gap-5">
-          <Button color="primary" type="submit">
-            <Link to="/">Отмена</Link>
-          </Button>
+        <div className="flex flex-col gap-4">
           <Button
             variant="contained"
             color="primary"
@@ -81,19 +78,19 @@ export const LoginForm = () => {
           >
             Войти
           </Button>
-        </div>
-        <Typography
-          variant="subtitle2"
-          className="w-full flex flex-row justify-end gap-4"
-        >
-          <span>Нет аккаунта?</span>
-          <Link
-            to="/auth/register"
-            className="text-blue-600 hover:text-blue-400"
+          <Typography
+            variant="subtitle2"
+            className="w-full flex flex-row gap-4 justify-center"
           >
-            Зарегистрируйтесь
-          </Link>
-        </Typography>
+            <div>Нет аккаунта?</div>
+            <Link
+              to="/auth/register"
+              className="text-blue-600 hover:text-blue-400"
+            >
+              Зарегистрируйтесь
+            </Link>
+          </Typography>
+        </div>
       </div>
     </Dialog>
   );
