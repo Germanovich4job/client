@@ -6,5 +6,5 @@ export const Route = createFileRoute("/products/add/")({
 });
 
 function RouteComponent() {
-  return <ProductForm open={true} mode="add" onClose={() => {}} />;
+  return <ProductForm mode="create" onClose={() => {}} />;
 }

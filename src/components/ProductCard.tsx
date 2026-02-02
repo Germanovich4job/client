@@ -23,10 +23,10 @@ const ProductCard = ({ id }: { id: string }) => {
 
   const handleDeleteProduct = async () => {
     await deleteProduct(id)
-      .then(res => {
+      .then(() => {
         navigate({ to: "/products" });
       })
-      .catch(res => false);
+      .catch(() => console.error("Не удалось удалить продукт"));
   };
 
   if (isLoading) {
@@ -36,7 +36,7 @@ const ProductCard = ({ id }: { id: string }) => {
   if (editDialog) {
     return (
       <ProductForm
-        mode="edit"
+        mode="update"
         onClose={() => setEditDialog(false)}
         product={product}
       />
