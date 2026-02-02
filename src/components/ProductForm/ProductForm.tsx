@@ -84,7 +84,7 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
   const actionName = isCreateMode ? "Добавить продукт" : "Обновить продукт";
 
   return (
-    <div className="flex flex-col p-5 gap-4 min-w-100 max-w-200">
+    <div className="flex flex-col p-5 gap-4 min-w-100 max-w-200 border-blue-100 border rounded-sm">
       <Typography variant="h6">{formTitle}</Typography>
       <div className="flex flex-col gap-4 w-full">
         <TextField

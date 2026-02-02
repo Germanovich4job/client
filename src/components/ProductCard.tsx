@@ -37,7 +37,7 @@ const ProductCard = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="flex flex-row-reverse gap-4 w-200 justify-between border-blue-100 border p-4 rounded-sm">
+    <div className="flex flex-row-reverse gap-4 w-200 justify-between border-blue-100 border p-5 rounded-sm">
       {product?.imageUrl && (
         <img
           src={product.imageUrl}
@@ -48,9 +48,7 @@ const ProductCard = ({ id }: { id: string }) => {
         />
       )}
       <div className="min-w-100 max-w-200 flex flex-col gap-4">
-        <Typography gutterBottom variant="h5" component="div">
-          {product?.title}
-        </Typography>
+        <Typography variant="h6">{product?.title}</Typography>
         <Typography variant="subtitle1" color="primary.main">
           Цена: {product?.price.toLocaleString()} руб.
         </Typography>
