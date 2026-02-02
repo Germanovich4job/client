@@ -1,28 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CreateProductDTO, ProductDTO, UpdateProductDTO } from "../dto";
-
-const BASE_URL = "http://localhost:5000/api/";
-
-const baseQueryConfig = fetchBaseQuery({
-  baseUrl: BASE_URL,
-  prepareHeaders: headers => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      headers.set("Authorization", `${token}`);
-    }
-    return headers;
-  },
-});
-
-const customFetchBaseQuery = async (...args) => {
-  const result = await baseQueryConfig(...args);
-
-  if (result.error && result.error.status === 401) {
-    console.error("Авторизация не пройдена:", result.error);
-  }
-
-  return result;
-};
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { customFetchBaseQuery } from "./config";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",

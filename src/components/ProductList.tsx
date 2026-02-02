@@ -1,10 +1,9 @@
-import { useGetAllProductsQuery } from "../services/productsApi";
+import { useGetAllProductsQuery } from "../services";
 import { useNavigate } from "@tanstack/react-router";
 
-import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Box } from "@mui/material";
 import { ProductDTO } from "../dto";
 
 const ProductList = () => {

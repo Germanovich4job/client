@@ -1,12 +1,11 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { LoginFormData, RegisterFormData } from "../components/auth/schema";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { LoginFormData, RegisterFormData } from "../components/auth";
 import { UserDTO } from "../dto";
-
-const baseUrl = "http://localhost:5000/api";
+import { customFetchBaseQuery } from "./config";
 
 export const authApi = createApi({
   reducerPath: "auth",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: customFetchBaseQuery,
   tagTypes: ["Auth"],
   endpoints: builder => ({
     register: builder.mutation<UserDTO, RegisterFormData>({

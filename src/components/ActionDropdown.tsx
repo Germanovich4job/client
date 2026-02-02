@@ -1,13 +1,10 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import AddIcon from "@mui/icons-material/Add";
-import { Tooltip } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
+import { Add } from "@mui/icons-material";
 
 type ActionType = {
   key: string;
-  label: string;
+  label?: string;
   action: () => void;
 };
 
@@ -41,7 +38,7 @@ export const ActionDropdown = ({ label, actions }: IActionDropdown) => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <AddIcon color="action" sx={{ color: "white" }} />
+        <Add color="action" sx={{ color: "white" }} />
       </Button>
       <Menu
         id="basic-menu"
