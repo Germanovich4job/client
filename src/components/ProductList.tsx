@@ -2,19 +2,20 @@ import { useGetAllProductsQuery } from "../services/productsApi";
 import { useNavigate } from "@tanstack/react-router";
 
 import Box from "@mui/material/Box";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 
 import { LinearProgress } from "@mui/material";
+import { ProductDTO } from "../dto";
 
 const ProductList = () => {
   const navigate = useNavigate({ from: "/products" });
-  const { data: products, isLoading } = useGetAllProductsQuery({});
+  const { data: products = [], isLoading } = useGetAllProductsQuery();
 
-  const handleOpen = ({ id }) => {
+  const handleOpen: GridEventListener<"rowClick"> = ({ id }) => {
     navigate({ to: `/products/${id}` });
   };
 
-  const columns: GridColDef<(typeof products)[number]>[] = [
+  const columns: GridColDef<ProductDTO>[] = [
     {
       field: "title",
       headerName: "Наименование",
@@ -43,12 +44,14 @@ const ProductList = () => {
       flex: 1,
       renderCell: ({ row }) => (
         <div className="flex flex-row align-middle p-2">
-          <img
-            src={row.imageUrl}
-            width={36}
-            height={36}
-            className="rounded-sm"
-          />
+          {row?.imageUrl && (
+            <img
+              src={row.imageUrl}
+              width={36}
+              height={36}
+              className="rounded-sm"
+            />
+          )}
         </div>
       ),
     },

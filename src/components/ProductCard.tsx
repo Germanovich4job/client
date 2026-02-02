@@ -1,17 +1,10 @@
-import {
-  Typography,
-  Button,
-  LinearProgress,
-  Dialog,
-  DialogContent,
-  DialogActions,
-  DialogTitle,
-} from "@mui/material";
+import { Typography, Button, LinearProgress } from "@mui/material";
 
 import { useDeleteProductMutation, useGetProductByIdQuery } from "../services";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import ProductForm from "./ProductForm/ProductForm";
+import { ActionModal } from "./ActionModal";
 
 const ProductCard = ({ id }: { id: string }) => {
   const [editDialog, setEditDialog] = useState(false);
@@ -44,7 +37,7 @@ const ProductCard = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="flex flex-row-reverse gap-4 w-200  justify-between border-blue-100 border p-4 rounded-sm">
+    <div className="flex flex-row-reverse gap-4 w-200 justify-between border-blue-100 border p-4 rounded-sm">
       {product?.imageUrl && (
         <img
           src={product.imageUrl}
@@ -89,29 +82,16 @@ const ProductCard = ({ id }: { id: string }) => {
           </Button>
         </div>
       </div>
-      <Dialog open={deleteDialog} onClose={() => setDeleteDialog(false)}>
-        <DialogTitle>Подтвердите удаление</DialogTitle>
-        <DialogContent>
-          Данная позиция будет удалена из номенклатуры товаров. Действие нельзя
-          будет отменить
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="text"
-            color="warning"
-            onClick={() => setDeleteDialog(false)}
-          >
-            Выйти из диалога
-          </Button>
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={handleDeleteProduct}
-          >
-            Удалить
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ActionModal
+        title="Подтвердите удаление"
+        content="Данная позиция будет удалена из номенклатуры товаров. Действие нельзя
+          будет отменить"
+        open={deleteDialog}
+        onClose={() => setDeleteDialog(false)}
+        onSubmitAction={handleDeleteProduct}
+        actionName="Удалить"
+        cancelName="Выйти"
+      />
     </div>
   );
 };
