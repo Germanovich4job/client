@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
+
 import {
   TextField,
   Button,
@@ -17,6 +18,7 @@ import {
 } from "../../services";
 import { ProductFormSchema, productSchema } from "./product.schema";
 import { readImageAsBase64 } from "./utils";
+import { CreateProductDTO, UpdateProductDTO } from "../../dto";
 
 type ProductFormProps = {
   product?: any;
@@ -50,34 +52,16 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
 
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
+  const action = mode === "add" ? createProduct : updateProduct;
 
-  const submitHandler = async data => {
-    const formData = {
-      title,
-      description,
-      price,
-      quantity,
-      category,
-      manufacturer,
-      imageUrl,
-    };
-
-    if (mode === "add") {
-      await createProduct(formData)
-        .unwrap()
-        .then(() => {
-          reset();
-          onClose();
-        })
-        .catch(err => console.error("Ошибка при создании продукта:", err));
-    } else if (mode === "edit") {
-      await updateProduct({ id: product.id, data: formData })
-        .unwrap()
-        .then(() => {
-          onClose();
-        })
-        .catch(err => console.error("Ошибка при обновлении продукта:", err));
-    }
+  const submitHandler = async (data: UpdateProductDTO | CreateProductDTO) => {
+    await action({ data, id: product?.id })
+      .unwrap()
+      .then(() => {
+        reset();
+        onClose();
+      })
+      .catch(err => console.error("Ошибка при создании продукта:", err));
   };
 
   const handleFileSelect = async event => {
@@ -88,8 +72,6 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
     setValue("imageUrl", result);
   };
 
-  console.log(watch());
-
   return (
     <div className="flex flex-col p-5 gap-4 min-w-100 max-w-200">
       <Typography variant="h6">
@@ -97,9 +79,8 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
       </Typography>
       <div className="flex flex-col gap-4 w-full">
         <TextField
-          size="medium"
           fullWidth
-          label="Название"
+          label="Наименование"
           type="text"
           value={title}
           onChange={event => setValue("title", event.target.value)}

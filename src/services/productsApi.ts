@@ -38,17 +38,20 @@ export const productsApi = createApi({
       providesTags: result =>
         result ? [{ type: "Product", id: result.id }] : [],
     }),
-    createProduct: builder.mutation<ProductDTO, CreateProductDTO>({
-      query: body => ({
+    createProduct: builder.mutation<
+      ProductDTO,
+      { data: CreateProductDTO | UpdateProductDTO; id: string }
+    >({
+      query: ({ data }) => ({
         url: "/products",
         method: "POST",
-        body,
+        body: data,
       }),
       invalidatesTags: ["Product"],
     }),
     updateProduct: builder.mutation<
       UpdateProductDTO,
-      { id: string; data: CreateProductDTO }
+      { data: CreateProductDTO | UpdateProductDTO; id: string }
     >({
       query: ({ id, data }) => ({
         url: `/products/${id}`,
