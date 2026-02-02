@@ -23,7 +23,7 @@ import { CreateProductDTO, UpdateProductDTO } from "../../dto";
 type ProductFormProps = {
   product?: any;
   onClose: () => void;
-  mode: "add" | "edit";
+  mode: "create" | "update";
 };
 
 const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
@@ -52,10 +52,13 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
 
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
-  const action = mode === "add" ? createProduct : updateProduct;
+
+  const isLoading = isCreating || isUpdating;
+  const isCreateMode = mode === "create";
+  const submit = isCreateMode ? createProduct : updateProduct;
 
   const submitHandler = async (data: UpdateProductDTO | CreateProductDTO) => {
-    await action({ data, id: product?.id })
+    await submit({ data, id: product?.id })
       .unwrap()
       .then(() => {
         reset();
@@ -64,19 +67,25 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
       .catch(err => console.error("Ошибка при создании продукта:", err));
   };
 
-  const handleFileSelect = async event => {
-    const file = event.target.files[0];
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.item(0);
     if (!file) return;
 
     const result = await readImageAsBase64(file);
     setValue("imageUrl", result);
   };
 
+  const formTitle = isCreateMode
+    ? "Добавление продукта"
+    : "Редактирование продукта";
+
+  const actionName = isCreateMode ? "Добавить продукт" : "Обновить продукт";
+
   return (
     <div className="flex flex-col p-5 gap-4 min-w-100 max-w-200">
-      <Typography variant="h6">
-        {mode === "add" ? "Добавление продукта" : "Редактирование продукта"}
-      </Typography>
+      <Typography variant="h6">{formTitle}</Typography>
       <div className="flex flex-col gap-4 w-full">
         <TextField
           fullWidth
@@ -137,7 +146,7 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
         <Box className="flex flex-row gap-2">
           <Button
             variant="contained"
-            color="primary"
+            color="success"
             startIcon={<AddAPhoto />}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -153,20 +162,15 @@ const ProductForm = ({ product, onClose, mode }: ProductFormProps) => {
             ref={fileInputRef}
           />
         </Box>
+        ы
         <div className="flex flex-row justify-end gap-2">
-          <Button onClick={onClose}>Отменить</Button>
+          <Button onClick={onClose}>Выйти</Button>
           <Button
             type="submit"
             onClick={handleSubmit(submitHandler)}
-            disabled={isCreating || isUpdating}
+            disabled={isLoading}
           >
-            {isCreating || isUpdating ? (
-              <CircularProgress size={24} />
-            ) : mode === "add" ? (
-              "Добавить"
-            ) : (
-              "Обновить"
-            )}
+            {isLoading ? <CircularProgress size={24} /> : actionName}
           </Button>
         </div>
       </div>
