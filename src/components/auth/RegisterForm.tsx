@@ -1,14 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useCallback, useRef } from "react";
 
 import { RegisterFormData, registerSchema } from "./schema";
 import { TextField, Button, Dialog, Typography } from "@mui/material";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useRegisterMutation } from "../../services";
 
+const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = event => resolve(event.target!.result!.toString());
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
+};
+
 export const RegisterForm = () => {
   const { navigate } = useRouter();
   const [register] = useRegisterMutation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const {
     watch,
     formState: { errors },
@@ -27,7 +39,10 @@ export const RegisterForm = () => {
     repeatPassword,
     email,
     phone,
+    avatar,
   } = watch();
+
+  console.log(watch());
 
   const handleFinish = async (values: RegisterFormData) => {
     try {
@@ -35,6 +50,16 @@ export const RegisterForm = () => {
       navigate({ to: "/auth/login" });
     } catch (e) {
       if (e) console.error(e);
+    }
+  };
+
+  const handleAvatarUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0]; // Получаем первый выбранный файл
+    if (file) {
+      const base64 = await convertToBase64(file); // Преобразуем файл в base64
+      setValue("avatar", base64); // Устанавливаем значение поля "avatar"
     }
   };
 
@@ -77,7 +102,7 @@ export const RegisterForm = () => {
             required
             fullWidth
             label="Номер телефона"
-            type="phone"
+            type="tel"
             value={phone}
             onChange={e => setValue("phone", e.target.value)}
             error={!!errors.phone}
@@ -117,6 +142,25 @@ export const RegisterForm = () => {
             onChange={e => setValue("repeatPassword", e.target.value)}
             error={!!errors.repeatPassword}
             helperText={errors.repeatPassword?.message}
+          />
+
+          {/* Поле для выбора файла аватара */}
+          <label htmlFor="upload-file-input" className="cursor-pointer">
+            <Button
+              variant="outlined"
+              component="span"
+              style={{ marginBottom: "1rem" }}
+            >
+              Загрузить аватар
+            </Button>
+          </label>
+          <input
+            hidden
+            id="upload-file-input"
+            type="file"
+            accept="image/png,image/jpeg"
+            onChange={handleAvatarUpload}
+            ref={fileInputRef}
           />
         </div>
         <div className="flex flex-row justify-end gap-5">
