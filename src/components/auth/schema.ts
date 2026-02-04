@@ -31,6 +31,7 @@ export const registerSchema = z.object({
       /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
       "Пароль должен содержать строчные и заглавные латинские буквы, цифры и спецсимволы",
     ),
+  avatar: z.string(),
 });
 
 export const loginSchema = z.object({

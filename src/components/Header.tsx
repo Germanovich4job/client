@@ -1,9 +1,9 @@
-import { AppBar, Button, Box, Tab, Tabs } from "@mui/material";
-import { Logout } from "@mui/icons-material";
+import { AppBar, Box, Tab, Tabs } from "@mui/material";
 import { Link, useNavigate } from "@tanstack/react-router";
 
 import { useState } from "react";
 import { ActionDropdown } from "./ActionDropdown";
+import { Profile } from "./Profile";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -55,12 +55,7 @@ const Header = () => {
         </div>
 
         <div className="flex flex-row justify-end">
-          <Button href="/auth/login" color="inherit" size="small">
-            Войти
-          </Button>
-          <Button href="/logout" color="inherit" size="small">
-            <Logout fontSize="large" className="scale-60" />
-          </Button>
+          <Profile />
         </div>
       </AppBar>
       <Box

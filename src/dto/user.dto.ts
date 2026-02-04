@@ -6,6 +6,7 @@ export interface UserDTO {
   phone: string;
   password: string;
   role: ["ADMIN"];
+  avatar: string;
 }
 
 export interface RegisterFormData extends UserDTO {
